@@ -23,3 +23,5 @@ First time running the plugin it will ask you what folder the Texconv.exe is loc
 Microsoft Texconv (Download and extract to whatever folder you want)
 
 https://github.com/Microsoft/DirectXTex/wiki/Texconv
+
+Developed and tested with Substance Painter 7.3.1 (2021)
