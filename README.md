@@ -39,3 +39,8 @@ https://github.com/Microsoft/DirectXTex/wiki/Texconv
 
 # Compatibility
 Developed and tested with Substance Painter 7.3.1 (2021)
+
+## Support
+For support, please use this repository's GitHub Issues tracking service. Feel free to send me an email if you use and like the plugin.
+
+Copyright (c) 2023 Emil Eldstål
