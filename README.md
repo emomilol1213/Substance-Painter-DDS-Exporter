@@ -1,3 +1,6 @@
+# Starfield Mod Page
+https://www.nexusmods.com/starfield/mods/4891
+
 A Substance Painter DDS export plugin to automate the PNG to DDS conversion.
 
 No more spending minutes converting those 20 different maps to DDS via PS/Intel/Paint.net etc
