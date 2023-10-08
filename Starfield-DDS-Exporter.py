@@ -1,6 +1,6 @@
 __author__ = "Emil Eldstål"
 __copyright__ = "Copyright 2023, Emil Eldstål"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 from PySide2 import QtWidgets
 from PySide2.QtCore import Qt
@@ -64,7 +64,7 @@ def choose_texconv_folder():
     substance_painter.ui.get_main_window(),"Choose Texconv directory")
     return path +"/texconv.exe"
 
-def convert_png_to_dds(texconvPath, sourcePNG):
+def convert_png_to_dds(texconvPath, sourcePNG, overwrite):
     # Replace backslashes with forward slashes in the provided paths
     texconvPath = texconvPath.replace('\\', '/')
     sourceFolder = os.path.dirname(sourcePNG)
@@ -84,28 +84,32 @@ def convert_png_to_dds(texconvPath, sourcePNG):
         suffix = sourceFile.split('_')[-1]
         suffix = suffix.rstrip('_')
 
-        outputFile = None
+        outputFile = sourceFile + ".dds"
 
-        if suffix in ["metal", "rough", "transmissive", "ao", "opacity", "height", "mask"]:
-            outputFile = sourceFile + ".dds"
+        if suffix in ["metal", "rough", "transmissive", "emissive", "ao", "opacity", "height", "mask"]:
             format_option = "BC4_UNORM"
         elif suffix == "normal":
-            outputFile = sourceFile + ".dds"
             format_option = "BC5_SNORM"
         elif suffix == "color":
-            outputFile = sourceFile + ".dds"
             format_option = "BC7_UNORM"
+        # If for some reason it's using some other suffix that's not supported
+        else:
+            format_option = "BC1_UNORM"
 
         format_option = format_option.rstrip('"')
+        if overwrite:
+            overwrite_option = "-y"
+        else:
+            overwrite_option = ""
+
         if outputFile:
             texconv_cmd = [
                 texconvPath,
-                "-nologo",
+                "-nologo", overwrite_option,
                 "-o", outputFolder,
                 "-f", format_option,
                 os.path.join(sourceFolder, filename)
             ]
-
             texconv_cmd_str = subprocess.list2cmdline(texconv_cmd)
 
             try:
@@ -118,8 +122,10 @@ class StarfieldDDSPlugin:
     def __init__(self):
         # Export boolean whether to add DDS creation or not
         self.export = True
+        # Overwrites existing DDS files if checked
+        self.overwrite = True
         # Plugin Version
-        self.version = "0.1"
+        self.version = "0.1.1"
 
         # Create a dock widget to report plugin activity.
         self.log = QtWidgets.QTextEdit()
@@ -131,12 +137,16 @@ class StarfieldDDSPlugin:
 
         checkbox = QtWidgets.QCheckBox("Export DDS files")
         checkbox.setChecked(True)
+        checkbox_overwrite = QtWidgets.QCheckBox("Overwrite DDS files")
+        checkbox_overwrite.setChecked(True)
         button_texconv = QtWidgets.QPushButton("Choose Texconv location")
         button_clear = QtWidgets.QPushButton("Clear Log")
+
         version_label = QtWidgets.QLabel("Version: {}".format(self.version))
 
         # Adds buttons to sub-layout
         sub_layout.addWidget(checkbox)
+        sub_layout.addWidget(checkbox_overwrite)
         sub_layout.addWidget(button_texconv)
         sub_layout.addWidget(button_clear)
 
@@ -152,6 +162,7 @@ class StarfieldDDSPlugin:
 
         # Connects buttons to click events
         checkbox.stateChanged.connect(self.checkbox_export_change)
+        checkbox_overwrite.stateChanged.connect(self.checkbox_overwrite_change)
         button_texconv.clicked.connect(self.button_texconv_clicked)
         button_clear.clicked.connect(self.button_clear_clicked)
 
@@ -179,6 +190,12 @@ class StarfieldDDSPlugin:
         else:
             self.export = False
 
+    def checkbox_overwrite_change(self,state):
+        if state == Qt.Checked:
+            self.overwrite = True
+        else:
+            self.overwrite = False
+
     def __del__(self):
         # Remove all added UI elements.
         substance_painter.ui.delete_ui_element(self.log)
@@ -195,7 +212,7 @@ class StarfieldDDSPlugin:
             self.log.append("Converting to DDS files:")
             for file_list in res.textures.values():
                 for file_path in file_list:
-                    convert_png_to_dds(self.TexConvPath,file_path)
+                    convert_png_to_dds(self.TexConvPath,file_path,self.overwrite)
                     file_path = file_path[:-3]+"DDS"
                     self.log.append("  {}".format(file_path))
 
