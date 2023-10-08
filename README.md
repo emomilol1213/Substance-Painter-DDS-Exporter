@@ -10,13 +10,13 @@ C:\Users\username\Documents\Adobe\Adobe Substance 3D Painter\python\plugins
 
 (Can also be found using the Python > Plugins Folder button in the top row)
 
-# Export preset:
+## Export preset:
 Move the Starfield.spexp from the optional files to this folder: 
 <pre>
 C:\Users\username\Documents\Adobe\Adobe Substance 3D Painter\assets\export-presets
 </pre>
 
-# Enable the Starfield-DDS-Exporter under the Python menu
+## Enable the Starfield-DDS-Exporter under the Python menu
 First time running the plugin it will ask you what folder the Texconv.exe is located in via a UI pop-up. This will create a Starfield-DDS-Exporter-PluginSettings.ini in the plugin folder with the settings saved.
 
 # Dependencies:
