@@ -1,9 +1,16 @@
+<h1 align="center">
+Starfield Substance Painter DDS Exporter
+</h1>
+
+![banner](https://staticdelivery.nexusmods.com/mods/4187/images/4891/4891-1696725885-1834762162.png)
+
 # Starfield Mod Page
 https://www.nexusmods.com/starfield/mods/4891
 
 A Substance Painter DDS export plugin to automate the PNG to DDS conversion.
 
-No more spending minutes converting those 20 different maps to DDS via PS/Intel/Paint.net etc
+Mainly made for making Starfield modding easier via DDS creation, but could be tweaked in the future to be more modular and dependant on export presets.
+No more spending 20 minutes manually converting those 20 different maps to DDS via tedious steps in PS/Intel/Paint.net etc
 
 # Installation:
 Extract the starfield-dds-exporter.py into your Substance Painter Plugin folder:
@@ -21,6 +28,9 @@ C:\Users\username\Documents\Adobe\Adobe Substance 3D Painter\assets\export-prese
 
 ## Enable the Starfield-DDS-Exporter under the Python menu
 First time running the plugin it will ask you what folder the Texconv.exe is located in via a UI pop-up. This will create a Starfield-DDS-Exporter-PluginSettings.ini in the plugin folder with the settings saved.
+
+![plugin widget](https://staticdelivery.nexusmods.com/mods/4187/images/4891/4891-1696725603-1907132508.png)
+Dockable widget with output terminal and basic settings
 
 # Dependencies:
 Microsoft Texconv (Download and extract to whatever folder you want)
